@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "iHub Manifest",
+  "type": "object",
+  "required": [
+    "name",
+    "language"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string"
+    },
+    "modules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pages": {
+      "type": "array"
+    },
+    "database": {
+      "type": "string"
+    },
+    "auth": {
+      "type": "boolean"
+    },
+    "payments": {
+      "type": "boolean"
+    }
+  }
+}

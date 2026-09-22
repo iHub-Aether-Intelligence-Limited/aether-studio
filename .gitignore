@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -216,3 +217,17 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+=======
+__pycache__/
+*.pyc
+*.pyo
+.env
+build_output/
+workspaces/
+database/
+*.egg-info/
+dist/
+build/
+*.exe
+.DS_Store
+>>>>>>> 1951691 (Initial: Aether Studio v1.0.0)

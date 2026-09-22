@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Aether Studio</title>
+<link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+<div class="topbar">
+  <h1>⚡ Aether Studio</h1>
+  <div style="display:flex;gap:8px;align-items:center">
+    <button class="btn ghost sm" onclick="showView('build')">▶ Build</button>
+    <button class="btn ghost sm" onclick="showView('preview')">📱 Preview</button>
+    <select id="langSelect" onchange="changeLanguage(this.value)" style="width:auto;padding:6px 10px"><option value="en">English</option><option value="zh">中文</option><option value="es">Español</option></select>
+    <button class="btn ghost sm" onclick="toggleTheme()">🌙</button>
+    <button class="btn ghost sm" onclick="togglePalette()">⌘K</button>
+    <span style="background:#238636;color:#fff;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600">FREE FOREVER</span> <div id="userInfo" style="font-size:13px;opacity:0.7">default_user</div>
+  </div>
+</div>
+<div class="layout">
+  <div class="sidebar">
+    <button class="active" onclick="showView('workspace',this)">🗂 Workspace</button>
+    <button onclick="showView('assistant',this)">🤖 AI Assistant</button>
+    <button onclick="showView('appbuilder',this)">🏗 App Builder</button>
+    <button onclick="showView('sdk',this)">📦 SDK Generator</button>
+    <button onclick="showView('worktask',this)">🔧 Work Task Mode</button>
+    <button onclick="showView('addons',this)">🧩 Add-ons</button>
+    <button onclick="showView('explorer',this)">📁 File Explorer</button>
+    <button onclick="showView('assets',this)">🖼 Assets / Images</button>
+    <button onclick="showView('modules',this)">🧩 Modules</button>
+    <button onclick="showView('canvas',this)">🎨 Canvas Builder</button>
+    <button onclick="showView('code',this)">📝 Code Editor</button>
+    <button onclick="showView('db',this)">🗄 Database</button>
+    <button onclick="showView('build',this)">🔨 Build</button>
+    <button onclick="showView('logs',this)">📟 Build Logs</button>
+    <button onclick="showView('terminal',this)">⌨️ Terminal</button>
+    <button onclick="showView('console',this)">⚠ Error Console</button>
+    <button onclick="showView('preview',this)">📱 Preview</button>
+    <button onclick="showView('templates',this)">📋 Templates</button>
+    <button onclick="showView('packages',this)">📦 Packages</button>
+    <button onclick="showView('git',this)">🌿 Git</button>
+    <button onclick="showView('settings',this)">⚙ Settings</button>
+  </div>
+  <div class="main" id="mainArea">
+
+
+    <div id="view-assistant" class="view" style="display:none">
+      <div class="card">
+        <h2>🤖 Aether AI Assistant</h2>
+        <p style="opacity:0.7;margin-bottom:12px">Ask me about building, coding, debugging, or anything about your project.</p>
+        <div id="chatBox" style="height:450px;overflow-y:auto;background:#0B1020;border:1px solid #2a3550;border-radius:8px;padding:12px;margin-bottom:12px"></div>
+        <div class="row">
+          <input id="chatInput" placeholder="Ask the AI assistant..." onkeydown="if(event.key==='Enter')sendAssistant()">
+          <button class="btn" onclick="sendAssistant()">Send</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="view-appbuilder" class="view" style="display:none">
+      <div class="card">
+        <h2>🏗 App Builder</h2>
+        <p style="opacity:0.7;margin-bottom:12px">Give it a name and description — it builds the full project on your disk automatically.</p>
+        <div class="row">
+          <div style="flex:1"><label>App Name</label><input id="abName" placeholder="my_awesome_app"></div>
+          <div style="flex:1"><label>Language</label>
+            <select id="abLang">
+              <option value="python">Python</option>
+              <option value="javascript">JavaScript</option>
+              <option value="typescript">TypeScript</option>
+              <option value="go">Go</option>
+              <option value="flutter">Flutter/Dart</option>
+              <option value="java">Java</option>
+              <option value="ruby">Ruby</option>
+              <option value="rust">Rust</option>
+              <option value="kotlin">Kotlin</option>
+              <option value="php">PHP</option>
+              <option value="swift">Swift</option>
+              <option value="csharp">C#/.NET</option>
+            </select>
+          </div>
+        </div>
+        <label>What does this app do?</label>
+        <textarea id="abDesc" rows="3" placeholder="Describe the app logic..."></textarea>
+        <label>Output path</label>
+        <input id="abPath" placeholder="F:/Aether_Studio/build_output/my_app" value="F:/Aether_Studio/build_output/my_app">
+        <div class="row" style="margin-top:12px">
+          <button class="btn" onclick="startAppBuild()">🚀 Build App</button>
+          <button class="kill" onclick="killBuild()">⏹ Kill</button>
+        </div>
+        <div class="log" id="abLog" style="margin-top:12px;max-height:350px"></div>
+        <div id="abResult" style="margin-top:12px;display:none">
+          <h3 style="margin-bottom:8px">✅ Build Complete</h3>
+          <p id="abPathResult" style="opacity:0.7;margin-bottom:8px"></p>
+          <div id="abFileTree" style="font-family:monospace;font-size:12px;background:#0B1020;padding:12px;border-radius:8px;max-height:200px;overflow-y:auto"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-sdk" class="view" style="display:none">
+      <div class="card">
+        <h2>📦 SDK Generator (SDK Forge)</h2>
+        <p style="opacity:0.7;margin-bottom:12px">Describe your API schema — it generates a full SDK with clients, docs, and examples.</p>
+        <label>SDK Name</label>
+        <input id="sdkName" placeholder="my-api-sdk">
+        <label>Language</label>
+        <select id="sdkLang">
+          <option value="python">Python</option>
+          <option value="javascript">JavaScript/Node</option>
+          <option value="typescript">TypeScript</option>
+          <option value="go">Go</option>
+          <option value="java">Java</option>
+          <option value="ruby">Ruby</option>
+          <option value="php">PHP</option>
+        </select>
+        <label>API Schema (paste your endpoints or OpenAPI spec)</label>
+        <textarea id="sdkSchema" rows="5" placeholder="GET /api/users&#10;POST /api/users&#10;GET /api/users/:id"></textarea>
+        <div class="row" style="margin-top:12px">
+          <button class="btn" onclick="startSdkGen()">📦 Generate SDK</button>
+          <button class="ghost btn" onclick="alert('Manual mode: copy generated code and paste into your project')">✏ Manual Mode</button>
+        </div>
+        <div class="log" id="sdkLog" style="margin-top:12px;max-height:350px"></div>
+        <div id="sdkResult" style="margin-top:12px;display:none">
+          <h3 style="margin-bottom:8px">✅ SDK Generated</h3>
+          <div id="sdkFiles" style="font-family:monospace;font-size:12px;background:#0B1020;padding:12px;border-radius:8px;max-height:200px;overflow-y:auto"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="view-worktask" class="view" style="display:none">
+      <div class="card">
+        <h2>🔧 Aether Work Task Mode</h2>
+        <p style="opacity:0.7;margin-bottom:12px">Point it at any project on disk. It scans everything, finds errors, and fixes them automatically.</p>
+
+        <label>Project path on disk</label>
+        <input id="wtPath" placeholder="F:/MyProjects/my_app" value="F:/Aether_Studio/build_output/my_app">
+
+        <label>What to fix (optional - leave blank to auto-detect)</label>
+        <textarea id="wtPrompt" rows="3" placeholder="e.g. Fix all API routes, connect the database, add login..."></textarea>
+
+        <div class="row" style="margin-top:12px">
+          <button class="btn" onclick="runWorkTask()">▶ Start Auto-Fix</button>
+          <button class="btn ghost" onclick="runChecks()">🧪 Run Checks Only</button>
+          <button class="kill" onclick="killBuild()">⏹ Kill</button>
+        </div>
+
+        <div class="log" id="wtLog" style="margin-top:12px;max-height:400px"></div>
+
+        <div id="wtResult" style="margin-top:12px;display:none">
+          <h3>✅ Auto-Fix Complete</h3>
+          <div id="wtFixed" style="font-family:monospace;font-size:12px;background:#0B1020;padding:12px;border-radius:8px;max-height:200px;overflow-y:auto;margin-top:8px"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="view-addons" class="view" style="display:none">
+      <div class="card">
+        <h2>🧩 Build Add-ons</h2>
+        <p style="opacity:0.7;margin-bottom:16px">Choose add-ons for your build. Native add-ons use your own stack. Third-party add-ons use approved external libraries.</p>
+
+        <h3 style="color:#FF6B1A;margin-bottom:12px">⚡ Native Add-ons</h3>
+        <p style="opacity:0.6;margin-bottom:8px">Pure Aether stack, zero third-party dependencies.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-bottom:24px">
+          <div class="module-item" onclick="this.classList.toggle('on')">
+            <div><b>🔐 Auth System</b><br><small style="opacity:0.6">JWT + user registration/login</small></div>
+          </div>
+          <div class="module-item" onclick="this.classList.toggle('on')">
+            <div><b>🗄 SQLite ORM</b><br><small style="opacity:0.6">Database models + migrations</small></div>
+          </div>
+          <div class="module-item" onclick="this.classList.toggle('on')">
+            <div><b>📄 File Upload</b><br><small style="opacity:0.6">Upload images, docs, media</small></div>
+          </div>
+          <div class="module-item" onclick="this.classList.toggle('on')">
+            <div><b>📧 Email Notifications</b><br><small style="opacity:0.6">SMTP email sending</small></div>
+          </div>
+          <div class="module-item" onclick="this.classList.toggle('on')">
+            <div><b>🔑 API Key Manager</b><br><small style="opacity:0.6">Full key lifecycle + audit</small></div>
+          </div>
+          <div class="module-item" onclick="this.classList.toggle('on')">
+            <div><b>📊 Logging</b><br><small style="opacity:0.6">Structured logging + error tracking</small></div>
+          </div>
+          <div class="module-item" onclick="this.classList.toggle('on')">
+            <div><b>🌐 CORS Middleware</b><br><small style="opacity:0.6">Cross-origin request handling</small></div>
+          </div>
+          <div class="module-item" onclick="this.classList.toggle('on')">
+            <div><b>🛡 Threat Shield</b><br><small style="opacity:0.6">Input sanitization + security</small></div>
+          </div>
+        </div>
+
+        <h3 style="color:#58a6ff;margin-bottom:12px">🔌 Extension Marketplace</h3>
+        <p style="opacity:0.6;margin-bottom:8px">Browse and install third-party extensions. One click installs.</p>
+        <div class="row" style="margin-bottom:12px">
+          <input id="extSearch" placeholder="Search extensions..." onkeyup="filterExts()">
+        </div>
+        <div id="extGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;max-height:500px;overflow-y:auto">
+          <div class="module-item ext-item" data-name="stripe">
+            <div><b>💳 Stripe Payments</b><br><small style="opacity:0.6">Payment processing + webhooks</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('stripe', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="flask">
+            <div><b>🚀 Flask Framework</b><br><small style="opacity:0.6">Python web framework</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('flask', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="chartjs">
+            <div><b>📊 Chart.js</b><br><small style="opacity:0.6">Frontend charts and graphs</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('chartjs', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="tailwind">
+            <div><b>🎨 Tailwind CSS</b><br><small style="opacity:0.6">Utility-first CSS framework</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('tailwind', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="redis">
+            <div><b>🔄 Redis Cache</b><br><small style="opacity:0.6">In-memory caching</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('redis', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="celery">
+            <div><b>📨 Celery Tasks</b><br><small style="opacity:0.6">Background task queue</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('celery', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="postgres">
+            <div><b>🐘 PostgreSQL</b><br><small style="opacity:0.6">Production database</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('postgres', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="elasticsearch">
+            <div><b>🔍 Elasticsearch</b><br><small style="opacity:0.6">Full-text search</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('elasticsearch', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="axios">
+            <div><b>📡 Axios HTTP</b><br><small style="opacity:0.6">Promise-based HTTP client</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('axios', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="react">
+            <div><b>⚛ React</b><br><small style="opacity:0.6">UI library for frontend</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('react', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="vue">
+            <div><b>💚 Vue.js</b><br><small style="opacity:0.6">Progressive JavaScript framework</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('vue', this)">Install</button>
+          </div>
+          <div class="module-item ext-item" data-name="docker">
+            <div><b>🐳 Docker Support</b><br><small style="opacity:0.6">Container config + compose</small></div>
+            <button class="btn ghost sm" style="margin-left:auto" onclick="installExt('docker', this)">Install</button>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:20px">
+          <button class="btn" onclick="toast('Add-ons saved')">💾 Save Add-ons</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="view-packages" class="view" style="display:none">
+      <div class="card"><h2>📦 Package Manager</h2>
+        <p style="opacity:0.7;margin-bottom:12px">Install dependencies for your project.</p>
+        <div class="row" style="margin-bottom:12px">
+          <input id="pkgName" placeholder="package name (e.g. flask, requests)">
+          <button class="btn" onclick="installPkg()">Install</button>
+        </div>
+        <div id="pkgList" class="log" style="max-height:300px"></div>
+      </div>
+    </div>
+
+    <div id="view-git" class="view" style="display:none">
+      <div class="card"><h2>🌿 Git</h2>
+        <div class="row" style="margin-bottom:12px">
+          <button class="btn ghost sm" onclick="gitCmd('status')">Status</button>
+          <button class="btn ghost sm" onclick="gitCmd('add .')">Add All</button>
+          <button class="btn ghost sm" onclick="gitCommit()">Commit</button>
+          <button class="btn ghost sm" onclick="gitCmd('push')">Push</button>
+          <button class="btn ghost sm" onclick="gitCmd('pull')">Pull</button>
+        </div>
+        <div class="log" id="gitLog" style="max-height:300px"></div>
+      </div>
+    </div>
+
+    <div id="view-workspace" class="view">
+      <div class="card">
+        <h2>Projects</h2>
+        <div class="row">
+          <input id="newName" placeholder="New project name">
+          <button class="btn" onclick="createProject()">Create</button>
+        </div>
+        <div id="projectList" style="margin-top:16px"></div>
+      </div>
+    </div>
+
+    <div id="view-explorer" class="view" style="display:none">
+      <div class="card"><h2>File Explorer</h2>
+        <div class="row" style="margin-bottom:12px">
+          <input id="explorerPath" placeholder="Project path" value="F:\\Aether_Studio">
+          <button class="btn ghost sm" onclick="refreshExplorer()">Refresh</button>
+        </div>
+        <div class="tree" id="fileTree" style="background:#0B1020;padding:12px;border-radius:8px;max-height:500px;overflow-y:auto"></div>
+      </div>
+    </div>
+
+    <div id="view-assets" class="view" style="display:none">
+      <div class="card"><h2>Asset Manager</h2>
+        <p style="opacity:0.7;margin-bottom:12px">Upload images, icons, fonts, videos and other media for your app.</p>
+        <div class="row" style="margin-bottom:12px">
+          <input type="file" id="assetUpload" multiple accept="image/*,video/*,audio/*,.ttf,.otf,.pdf">
+          <button class="btn" onclick="uploadAsset()">Upload</button>
+        </div>
+        <div id="assetGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px"></div>
+      </div>
+    </div>
+
+    <div id="view-modules" class="view" style="display:none">
+      <div class="card"><h2>Select Modules</h2><div id="moduleList"></div></div>
+    </div>
+
+    <div id="view-canvas" class="view" style="display:none">
+      <div class="card"><h2>Drag and Drop Canvas</h2>
+        <div style="display:flex;gap:12px">
+          <div style="width:200px">
+            <h3 style="font-size:13px;opacity:0.7;margin-bottom:8px">Components</h3>
+            <div class="module-item" draggable="true">📄 Page</div>
+            <div class="module-item" draggable="true">🔘 Button</div>
+            <div class="module-item" draggable="true">📝 Input</div>
+            <div class="module-item" draggable="true">🖼 Image</div>
+            <div class="module-item" draggable="true">📊 Table</div>
+            <div class="module-item" draggable="true">🔗 Link</div>
+            <div class="module-item" draggable="true">📋 Card</div>
+            <div class="module-item" draggable="true">📱 Navbar</div>
+          </div>
+          <div id="canvasArea" style="flex:1;min-height:400px;border:2px dashed #2a3550;border-radius:8px;padding:20px;background:#0B1020">Drop components here</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-code" class="view" style="display:none">
+      <div class="card" style="padding:0;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid #21262d">
+          <div style="display:flex;gap:4px" id="fileTabs"></div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <select id="codeLang" style="width:auto;padding:6px 10px"><option>python</option><option>javascript</option><option>typescript</option><option>html</option><option>css</option><option>sql</option></select>
+            <button class="btn ghost sm" onclick="formatCode()">Format</button>
+            <button class="btn ghost sm" onclick="lintCode()">Lint</button>
+            <button class="btn ghost sm" onclick="explainCode()">🤖 Explain</button>
+            <button class="btn ghost sm" onclick="refactorCode()">✨ Refactor</button>
+            <button class="btn" onclick="saveCode()">💾 Save</button>
+          </div>
+        </div>
+        <textarea id="codeEditor" style="height:550px;width:100%;background:#0a0a0a;color:#a5d6a7;font-family:'Cascadia Code',monospace;font-size:13px;border:1px solid #21262d;padding:16px;border-radius:0;resize:none"></textarea>
+      </div>
+    </div>
+
+    <div id="view-db" class="view" style="display:none">
+      <div class="card"><h2>Database Viewer</h2>
+        <p style="opacity:0.7">Connected: studio_db.sqlite</p>
+        <div class="row" style="margin:12px 0">
+          <input id="sqlQuery" placeholder="SELECT * FROM users;">
+          <button class="btn" onclick="runSql()">Run Query</button>
+        </div>
+        <div id="dbResult" style="background:#0B1020;padding:12px;border-radius:8px;font-family:monospace;font-size:12px;max-height:400px;overflow-y:auto">Run a query to see results</div>
+      </div>
+    </div>
+
+    <div id="view-build" class="view" style="display:none">
+      <div class="card">
+        <h2>Build Pipeline</h2>
+        <p>Project: <b id="buildProject">none</b></p>
+
+        <label>Build Mode (pick one)</label>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+          <div class="module-item" id="modeNative" onclick="setBuildMode('native')" style="text-align:center;flex-direction:column">
+            <h3 style="font-size:15px">⚡ Native Only</h3>
+            <small style="opacity:0.6">Pure Aether stack. Zero third-party dependencies. Everything self-contained.</small>
+          </div>
+          <div class="module-item" id="modeThird" onclick="setBuildMode('third')" style="text-align:center;flex-direction:column">
+            <h3 style="font-size:15px">🔌 Third-Party</h3>
+            <small style="opacity:0.6">Approved external components allowed. Stripe permitted. Other libraries as needed.</small>
+          </div>
+          <div class="module-item" id="modeMixed" onclick="setBuildMode('mixed')" style="text-align:center;flex-direction:column">
+            <h3 style="font-size:15px">⚡🔌 Mixed</h3>
+            <small style="opacity:0.6">Best of both. Native core with approved third-party integrations where needed.</small>
+          </div>
+        </div>
+
+        <div class="row" style="margin:12px 0">
+          <button class="btn" onclick="startBuild()">▶ Start Build</button>
+          <button class="btn ghost" onclick="smokeTest()">🧪 Smoke Test</button>
+          <button class="kill" onclick="killBuild()">⏹ Kill Switch</button>
+        </div>
+        <div class="log" id="buildLog" style="margin-top:12px;max-height:400px"></div>
+      </div>
+    </div>
+
+    <div id="view-logs" class="view" style="display:none">
+      <div class="card"><h2>Build Logs</h2><div class="log" id="logsPanel" style="max-height:600px"></div></div>
+    </div>
+
+    <div id="view-terminal" class="view" style="display:none">
+      <div class="card">
+        <h2>Terminal</h2>
+        <div class="log" id="terminalOut" style="height:480px;background:#0a0a0a;border:1px solid #1a1a2e"></div>
+        <div class="row" style="margin-top:8px">
+          <span style="color:#FF6B1A;font-family:monospace;align-self:center">❯</span>
+          <input id="terminalInput" placeholder="Type a command (e.g. help, build, list, clear)" onkeydown="if(event.key==='Enter')runTerminal()">
+        </div>
+      </div>
+    </div>
+
+    <div id="view-console" class="view" style="display:none">
+      <div class="card"><h2>Error Console</h2>
+        <div class="row" style="margin-bottom:8px">
+          <button class="btn ghost sm" onclick="clearConsole()">Clear</button>
+          <button class="btn ghost sm" onclick="runChecks()">Run All Checks</button>
+        </div>
+        <div id="errorConsole" class="log" style="max-height:500px;background:#0a0a0a"></div>
+      </div>
+    </div>
+
+    <div id="view-preview" class="view" style="display:none">
+      <div class="card"><h2>📱 Device Emulator</h2>
+        <div class="row" style="margin-bottom:16px;justify-content:center">
+          <button class="btn ghost sm" onclick="setPreviewSize(375,667,'iPhone')">📱 iPhone</button>
+          <button class="btn ghost sm" onclick="setPreviewSize(360,640,'Android')">🤖 Android</button>
+          <button class="btn ghost sm" onclick="setPreviewSize(768,1024,'iPad')">📱 iPad</button>
+          <button class="btn ghost sm" onclick="setPreviewSize(1280,800,'Desktop')">🖥 Desktop</button>
+          <button class="btn ghost sm" onclick="rotatePreview()">🔄 Rotate</button>
+          <button class="btn ghost sm" onclick="exportZip()">📦 Export ZIP</button>
+        </div>
+        <div style="display:flex;justify-content:center">
+          <div id="previewFrame" style="width:375px;height:667px;border:10px solid #1c2128;border-radius:40px;overflow:hidden;background:#fff;transition:width 0.3s,height 0.3s;position:relative">
+            <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:24px;background:#1c2128;border-radius:0 0 14px 14px;z-index:10"></div>
+            <iframe id="previewIframe" style="width:100%;height:100%;border:none" src="about:blank"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-templates" class="view" style="display:none">
+      <div class="card"><h2>Project Templates</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px" id="templateGrid">
+          <div class="module-item" onclick="useTemplate('web_app')"><b>🌐 Web App</b><br><small>Full stack web application</small></div>
+          <div class="module-item" onclick="useTemplate('api_service')"><b>🔌 API Service</b><br><small>REST backend service</small></div>
+          <div class="module-item" onclick="useTemplate('mobile_app')"><b>📱 Mobile App</b><br><small>Cross-platform (Flutter/Dart)</small></div>
+          <div class="module-item" onclick="useTemplate('ai_tool')"><b>🤖 AI Tool</b><br><small>AI inference tool</small></div>
+          <div class="module-item" onclick="useTemplate('saas')"><b>💼 SaaS Platform</b><br><small>Subscription platform</small></div>
+          <div class="module-item" onclick="useTemplate('ecommerce')"><b>🛒 E-Commerce</b><br><small>Online store</small></div>
+          <div class="module-item" onclick="useTemplate('chat_app')"><b>💬 Chat App</b><br><small>Real-time messaging</small></div>
+          <div class="module-item" onclick="useTemplate('blog')"><b>📝 Blog/CMS</b><br><small>Content management system</small></div>
+          <div class="module-item" onclick="useTemplate('dashboard')"><b>📊 Dashboard</b><br><small>Admin panel + analytics</small></div>
+          <div class="module-item" onclick="useTemplate('portfolio')"><b>🎨 Portfolio</b><br><small>Personal portfolio site</small></div>
+          <div class="module-item" onclick="useTemplate('crm')"><b>👥 CRM</b><br><small>Customer relationship</small></div>
+          <div class="module-item" onclick="useTemplate('notes')"><b>📓 Notes App</b><br><small>Notetaking with sync</small></div>
+          <div class="module-item" onclick="useTemplate('music_player')"><b>🎵 Music Player</b><br><small>Audio streaming app</small></div>
+          <div class="module-item" onclick="useTemplate('video_stream')"><b>🎬 Video Stream</b><br><small>Video streaming service</small></div>
+          <div class="module-item" onclick="useTemplate('social')"><b>👥 Social Network</b><br><small>Community platform</small></div>
+          <div class="module-item" onclick="useTemplate('fintech')"><b>💰 Fintech</b><br><small>Payments + wallet</small></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="view-settings" class="view" style="display:none">
+      <div class="card"><h2>Studio Settings</h2>
+        <label>Theme</label>
+        <select><option>Dark (fire orange)</option><option>Dark (blue)</option><option>Light</option></select>
+        <label>Default Language</label>
+        <select><option>Python</option><option>JavaScript</option><option>TypeScript</option><option>Go</option><option>Flutter</option></select>
+        <label>Build Output Path</label>
+        <input value="F:\\Aether_Studio\\build_output">
+        <label>Sandbox Isolation</label>
+        <select><option>Enabled (recommended)</option><option>Disabled</option></select>
+        <label>Auto Smoke Test</label>
+        <select><option>On</option><option>Off</option></select>
+        <button class="btn" style="margin-top:12px" onclick="alert('Settings saved')">Save Settings</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<script src="/js/studio.js"></script>
+
+<div id="cmdPalette" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10000" onclick="if(event.target===this)togglePalette()">
+  <div style="max-width:600px;margin:80px auto;background:#161b22;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.5)">
+    <input id="cmdInput" placeholder="Type a command..." style="border:none;border-radius:0;padding:16px;font-size:15px" onkeydown="if(event.key==='Enter')runCmd()">
+    <div id="cmdResults" style="max-height:400px;overflow-y:auto;padding:8px"></div>
+  </div>
+</div>
+
+</body></html>
