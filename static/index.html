@@ -44,12 +44,12 @@
 
     <div id="view-assistant" class="view" style="display:none">
       <div class="card">
-        <h2>🤖 Aether AI Assistant</h2>
-        <p style="opacity:0.7;margin-bottom:12px">Ask me about building, coding, debugging, or anything about your project.</p>
+        <h2><span data-i18n="assistant.title">🤖 Aether AI Assistant</span></h2>
+        <p style="opacity:0.7;margin-bottom:12px"><span data-i18n="assistant.subtitle">Ask me about building, coding, debugging, or anything about your project.</span></p>
         <div id="chatBox" style="height:450px;overflow-y:auto;background:#0B1020;border:1px solid #2a3550;border-radius:8px;padding:12px;margin-bottom:12px"></div>
         <div class="row">
-          <input id="chatInput" placeholder="Ask the AI assistant..." onkeydown="if(event.key==='Enter')sendAssistant()">
-          <button class="btn" onclick="sendAssistant()">Send</button>
+          <input id="chatInput" placeholder="<span data-i18n="assistant.placeholder">Ask the AI assistant...</span>" onkeydown="if(event.key==='Enter')sendAssistant()">
+          <button class="btn" onclick="sendAssistant()"><span data-i18n="button.send">Send</span></button>
         </div>
       </div>
     </div>
@@ -58,10 +58,10 @@
     <div id="view-appbuilder" class="view" style="display:none">
       <div class="card">
         <h2>🏗 <span data-i18n="sidebar.appbuilder">App Builder</span></h2>
-        <p style="opacity:0.7;margin-bottom:12px">Give it a name and description — it builds the full project on your disk automatically.</p>
+        <p style="opacity:0.7;margin-bottom:12px"><span data-i18n="appbuilder.subtitle">Give it a name and description — it builds the full project on your disk automatically.</span></p>
         <div class="row">
-          <div style="flex:1"><label>App Name</label><input id="abName" placeholder="my_awesome_app"></div>
-          <div style="flex:1"><label>Language</label>
+          <div style="flex:1"><label><span data-i18n="appbuilder.appname">App Name</span></label><input id="abName" placeholder="my_awesome_app"></div>
+          <div style="flex:1"><label><span data-i18n="appbuilder.language">Language</span></label>
             <select id="abLang">
               <option value="python">Python</option>
               <option value="javascript">JavaScript</option>
@@ -78,17 +78,17 @@
             </select>
           </div>
         </div>
-        <label>What does this app do?</label>
-        <textarea id="abDesc" rows="3" placeholder="Describe the app logic..."></textarea>
-        <label>Output path</label>
+        <label><span data-i18n="appbuilder.description">What does this app do?</span></label>
+        <textarea id="abDesc" rows="3" placeholder="<span data-i18n="appbuilder.desc_placeholder">Describe the app logic...</span>"></textarea>
+        <label><span data-i18n="appbuilder.output">Output path</span></label>
         <input id="abPath" placeholder="F:/Aether_Studio/build_output/my_app" value="F:/Aether_Studio/build_output/my_app">
         <div class="row" style="margin-top:12px">
-          <button class="btn" onclick="startAppBuild()">🚀 Build App</button>
-          <button class="kill" onclick="killBuild()">⏹ Kill</button>
+          <button class="btn" onclick="startAppBuild()"><span data-i18n="appbuilder.build">🚀 Build App</span></button>
+          <button class="kill" onclick="killBuild()"><span data-i18n="button.kill">⏹ Kill</span></button>
         </div>
         <div class="log" id="abLog" style="margin-top:12px;max-height:350px"></div>
         <div id="abResult" style="margin-top:12px;display:none">
-          <h3 style="margin-bottom:8px">✅ Build Complete</h3>
+          <h3 style="margin-bottom:8px"><span data-i18n="appbuilder.complete">✅ Build Complete</span></h3>
           <p id="abPathResult" style="opacity:0.7;margin-bottom:8px"></p>
           <div id="abFileTree" style="font-family:monospace;font-size:12px;background:#0B1020;padding:12px;border-radius:8px;max-height:200px;overflow-y:auto"></div>
         </div>
@@ -97,11 +97,11 @@
 
     <div id="view-sdk" class="view" style="display:none">
       <div class="card">
-        <h2>📦 <span data-i18n="sidebar.sdk">SDK Generator</span> (SDK Forge)</h2>
-        <p style="opacity:0.7;margin-bottom:12px">Describe your API schema — it generates a full SDK with clients, docs, and examples.</p>
-        <label>SDK Name</label>
+        <h2>📦 <span data-i18n="sidebar.sdk">SDK Generator</span> <span data-i18n="sdk.forge"> (SDK Forge)</span></h2>
+        <p style="opacity:0.7;margin-bottom:12px"><span data-i18n="sdk.subtitle">Describe your API schema — it generates a full SDK with clients, docs, and examples.</span></p>
+        <label><span data-i18n="sdk.name">SDK Name</span></label>
         <input id="sdkName" placeholder="my-api-sdk">
-        <label>Language</label>
+        <label><span data-i18n="appbuilder.language">Language</span></label>
         <select id="sdkLang">
           <option value="python">Python</option>
           <option value="javascript">JavaScript/Node</option>
@@ -111,15 +111,15 @@
           <option value="ruby">Ruby</option>
           <option value="php">PHP</option>
         </select>
-        <label>API Schema (paste your endpoints or OpenAPI spec)</label>
+        <label><span data-i18n="sdk.schema">API Schema (paste your endpoints or OpenAPI spec)</span></label>
         <textarea id="sdkSchema" rows="5" placeholder="GET /api/users&#10;POST /api/users&#10;GET /api/users/:id"></textarea>
         <div class="row" style="margin-top:12px">
-          <button class="btn" onclick="startSdkGen()">📦 Generate SDK</button>
-          <button class="ghost btn" onclick="alert('Manual mode: copy generated code and paste into your project')">✏ Manual Mode</button>
+          <button class="btn" onclick="startSdkGen()"><span data-i18n="sdk.generate">📦 Generate SDK</span></button>
+          <button class="ghost btn" onclick="alert('Manual mode: copy generated code and paste into your project')"><span data-i18n="sdk.manual">✏ Manual Mode</span></button>
         </div>
         <div class="log" id="sdkLog" style="margin-top:12px;max-height:350px"></div>
         <div id="sdkResult" style="margin-top:12px;display:none">
-          <h3 style="margin-bottom:8px">✅ SDK Generated</h3>
+          <h3 style="margin-bottom:8px"><span data-i18n="sdk.done">✅ SDK Generated</span></h3>
           <div id="sdkFiles" style="font-family:monospace;font-size:12px;background:#0B1020;padding:12px;border-radius:8px;max-height:200px;overflow-y:auto"></div>
         </div>
       </div>
@@ -128,25 +128,25 @@
 
     <div id="view-worktask" class="view" style="display:none">
       <div class="card">
-        <h2>🔧 Aether Work Task Mode</h2>
-        <p style="opacity:0.7;margin-bottom:12px">Point it at any project on disk. It scans everything, finds errors, and fixes them automatically.</p>
+        <h2><span data-i18n="worktask.title">🔧 Aether Work Task Mode</span></h2>
+        <p style="opacity:0.7;margin-bottom:12px"><span data-i18n="worktask.subtitle">Point it at any project on disk. It scans everything, finds errors, and fixes them automatically.</span></p>
 
-        <label>Project path on disk</label>
+        <label><span data-i18n="worktask.path">Project path on disk</span></label>
         <input id="wtPath" placeholder="F:/MyProjects/my_app" value="F:/Aether_Studio/build_output/my_app">
 
-        <label>What to fix (optional - leave blank to auto-detect)</label>
+        <label><span data-i18n="worktask.fix">What to fix (optional - leave blank to auto-detect)</span></label>
         <textarea id="wtPrompt" rows="3" placeholder="e.g. Fix all API routes, connect the database, add login..."></textarea>
 
         <div class="row" style="margin-top:12px">
-          <button class="btn" onclick="runWorkTask()">▶ Start Auto-Fix</button>
-          <button class="btn ghost" onclick="runChecks()">🧪 Run Checks Only</button>
-          <button class="kill" onclick="killBuild()">⏹ Kill</button>
+          <button class="btn" onclick="runWorkTask()"><span data-i18n="worktask.start">▶ Start Auto-Fix</span></button>
+          <button class="btn ghost" onclick="runChecks()"><span data-i18n="worktask.checks">🧪 Run Checks Only</span></button>
+          <button class="kill" onclick="killBuild()"><span data-i18n="button.kill">⏹ Kill</span></button>
         </div>
 
         <div class="log" id="wtLog" style="margin-top:12px;max-height:400px"></div>
 
         <div id="wtResult" style="margin-top:12px;display:none">
-          <h3>✅ Auto-Fix Complete</h3>
+          <h3><span data-i18n="worktask.done">✅ Auto-Fix Complete</span></h3>
           <div id="wtFixed" style="font-family:monospace;font-size:12px;background:#0B1020;padding:12px;border-radius:8px;max-height:200px;overflow-y:auto;margin-top:8px"></div>
         </div>
       </div>
@@ -155,11 +155,11 @@
 
     <div id="view-addons" class="view" style="display:none">
       <div class="card">
-        <h2>🧩 Build Add-ons</h2>
-        <p style="opacity:0.7;margin-bottom:16px">Choose add-ons for your build. Native add-ons use your own stack. Third-party add-ons use approved external libraries.</p>
+        <h2><span data-i18n="addons.title">🧩 Build Add-ons</span></h2>
+        <p style="opacity:0.7;margin-bottom:16px"><span data-i18n="addons.subtitle">Choose add-ons for your build. Native add-ons use your own stack. Third-party add-ons use approved external libraries.</span></p>
 
-        <h3 style="color:#FF6B1A;margin-bottom:12px">⚡ Native Add-ons</h3>
-        <p style="opacity:0.6;margin-bottom:8px">Pure Aether stack, zero third-party dependencies.</p>
+        <h3 style="color:#FF6B1A;margin-bottom:12px"><span data-i18n="addons.native">⚡ Native Add-ons</span></h3>
+        <p style="opacity:0.6;margin-bottom:8px"><span data-i18n="addons.native_desc">Pure Aether stack, zero third-party dependencies.</span></p>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-bottom:24px">
           <div class="module-item" onclick="this.classList.toggle('on')">
             <div><b>🔐 Auth System</b><br><small style="opacity:0.6">JWT + user registration/login</small></div>
@@ -187,10 +187,10 @@
           </div>
         </div>
 
-        <h3 style="color:#58a6ff;margin-bottom:12px">🔌 Extension Marketplace</h3>
-        <p style="opacity:0.6;margin-bottom:8px">Browse and install third-party extensions. One click installs.</p>
+        <h3 style="color:#58a6ff;margin-bottom:12px"><span data-i18n="addons.marketplace">🔌 Extension Marketplace</span></h3>
+        <p style="opacity:0.6;margin-bottom:8px"><span data-i18n="addons.marketplace_desc">Browse and install third-party extensions. One click installs.</span></p>
         <div class="row" style="margin-bottom:12px">
-          <input id="extSearch" placeholder="Search extensions..." onkeyup="filterExts()">
+          <input id="extSearch" placeholder="<span data-i18n="addons.search">Search extensions...</span>" onkeyup="filterExts()">
         </div>
         <div id="extGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;max-height:500px;overflow-y:auto">
           <div class="module-item ext-item" data-name="stripe">
