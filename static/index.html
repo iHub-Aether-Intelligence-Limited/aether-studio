@@ -5,10 +5,10 @@
 </head>
 <body>
 <div class="topbar">
-  <h1>⚡ Aether Studio</h1>
+  <h1 data-i18n="app.title">⚡ Aether Studio</h1>
   <div style="display:flex;gap:8px;align-items:center">
-    <button class="btn ghost sm" onclick="showView('build')">▶ Build</button>
-    <button class="btn ghost sm" onclick="showView('preview')">📱 Preview</button>
+    <button class="btn ghost sm" onclick="showView('build')" data-i18n="topbar.build">▶ Build</button>
+    <button class="btn ghost sm" onclick="showView('preview')" data-i18n="topbar.preview">📱 <span data-i18n="sidebar.preview">Preview</span></button>
     <select id="langSelect" onchange="changeLanguage(this.value)" style="width:auto;padding:6px 10px"><option value="en">English</option><option value="zh">中文</option><option value="es">Español</option></select>
     <button class="btn ghost sm" onclick="toggleTheme()">🌙</button>
     <button class="btn ghost sm" onclick="togglePalette()">⌘K</button>
@@ -17,27 +17,27 @@
 </div>
 <div class="layout">
   <div class="sidebar">
-    <button class="active" onclick="showView('workspace',this)">🗂 Workspace</button>
-    <button onclick="showView('assistant',this)">🤖 AI Assistant</button>
-    <button onclick="showView('appbuilder',this)">🏗 App Builder</button>
-    <button onclick="showView('sdk',this)">📦 SDK Generator</button>
-    <button onclick="showView('worktask',this)">🔧 Work Task Mode</button>
-    <button onclick="showView('addons',this)">🧩 Add-ons</button>
-    <button onclick="showView('explorer',this)">📁 File Explorer</button>
-    <button onclick="showView('assets',this)">🖼 Assets / Images</button>
-    <button onclick="showView('modules',this)">🧩 Modules</button>
-    <button onclick="showView('canvas',this)">🎨 Canvas Builder</button>
-    <button onclick="showView('code',this)">📝 Code Editor</button>
-    <button onclick="showView('db',this)">🗄 Database</button>
-    <button onclick="showView('build',this)">🔨 Build</button>
-    <button onclick="showView('logs',this)">📟 Build Logs</button>
-    <button onclick="showView('terminal',this)">⌨️ Terminal</button>
-    <button onclick="showView('console',this)">⚠ Error Console</button>
-    <button onclick="showView('preview',this)">📱 Preview</button>
-    <button onclick="showView('templates',this)">📋 Templates</button>
-    <button onclick="showView('packages',this)">📦 Packages</button>
-    <button onclick="showView('git',this)">🌿 Git</button>
-    <button onclick="showView('settings',this)">⚙ Settings</button>
+    <button class="active" onclick="showView('workspace',this)">🗂 <span data-i18n="sidebar.workspace">Workspace</span></button>
+    <button onclick="showView('assistant',this)">🤖 <span data-i18n="sidebar.assistant">AI Assistant</span></button>
+    <button onclick="showView('appbuilder',this)">🏗 <span data-i18n="sidebar.appbuilder">App Builder</span></button>
+    <button onclick="showView('sdk',this)">📦 <span data-i18n="sidebar.sdk">SDK Generator</span></button>
+    <button onclick="showView('worktask',this)">🔧 <span data-i18n="sidebar.worktask">Work Task Mode</span></button>
+    <button onclick="showView('addons',this)">🧩 <span data-i18n="sidebar.addons">Add-ons</span></button>
+    <button onclick="showView('explorer',this)">📁 <span data-i18n="sidebar.explorer">File Explorer</span></button>
+    <button onclick="showView('assets',this)">🖼 <span data-i18n="sidebar.assets">Assets / Images</span></button>
+    <button onclick="showView('modules',this)">🧩 <span data-i18n="sidebar.modules">Modules</span></button>
+    <button onclick="showView('canvas',this)">🎨 <span data-i18n="sidebar.canvas">Canvas Builder</span></button>
+    <button onclick="showView('code',this)">📝 <span data-i18n="sidebar.code">Code Editor</span></button>
+    <button onclick="showView('db',this)">🗄 <span data-i18n="sidebar.db">Database</span></button>
+    <button onclick="showView('build',this)">🔨 <span data-i18n="sidebar.build">Build</span></button>
+    <button onclick="showView('logs',this)">📟 <span data-i18n="sidebar.logs">Build Logs</span></button>
+    <button onclick="showView('terminal',this)">⌨️ <span data-i18n="sidebar.terminal">Terminal</span></button>
+    <button onclick="showView('console',this)">⚠ <span data-i18n="sidebar.console">Error Console</span></button>
+    <button onclick="showView('preview',this)">📱 <span data-i18n="sidebar.preview">Preview</span></button>
+    <button onclick="showView('templates',this)">📋 <span data-i18n="sidebar.templates">Templates</span></button>
+    <button onclick="showView('packages',this)">📦 <span data-i18n="sidebar.packages">Packages</span></button>
+    <button onclick="showView('git',this)">🌿 <span data-i18n="sidebar.git">Git</span></button>
+    <button onclick="showView('settings',this)">⚙ <span data-i18n="sidebar.settings">Settings</span></button>
   </div>
   <div class="main" id="mainArea">
 
@@ -57,7 +57,7 @@
 
     <div id="view-appbuilder" class="view" style="display:none">
       <div class="card">
-        <h2>🏗 App Builder</h2>
+        <h2>🏗 <span data-i18n="sidebar.appbuilder">App Builder</span></h2>
         <p style="opacity:0.7;margin-bottom:12px">Give it a name and description — it builds the full project on your disk automatically.</p>
         <div class="row">
           <div style="flex:1"><label>App Name</label><input id="abName" placeholder="my_awesome_app"></div>
@@ -97,7 +97,7 @@
 
     <div id="view-sdk" class="view" style="display:none">
       <div class="card">
-        <h2>📦 SDK Generator (SDK Forge)</h2>
+        <h2>📦 <span data-i18n="sidebar.sdk">SDK Generator</span> (SDK Forge)</h2>
         <p style="opacity:0.7;margin-bottom:12px">Describe your API schema — it generates a full SDK with clients, docs, and examples.</p>
         <label>SDK Name</label>
         <input id="sdkName" placeholder="my-api-sdk">
@@ -262,7 +262,7 @@
     </div>
 
     <div id="view-git" class="view" style="display:none">
-      <div class="card"><h2>🌿 Git</h2>
+      <div class="card"><h2>🌿 <span data-i18n="sidebar.git">Git</span></h2>
         <div class="row" style="margin-bottom:12px">
           <button class="btn ghost sm" onclick="gitCmd('status')">Status</button>
           <button class="btn ghost sm" onclick="gitCmd('add .')">Add All</button>
